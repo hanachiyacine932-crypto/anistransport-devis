@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>anis-transport-devis - Devis Transport Paris</title>
+    <meta
+      name="description"
+      content="Calculatrice de devis transport depuis Paris vers toutes les villes de France: prix au kilo, distance, essence et total."
+    />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:title" content="anis-transport-devis - Calculatrice Devis Transport Paris" />
+    <meta
+      property="og:description"
+      content="Estimez rapidement le cout de transport selon le poids et la ville de depart en France."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <link rel="sitemap" type="application/xml" href="sitemap.xml" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="hero">
+        <p class="badge">anis-transport-devis</p>
+        <h1>Calculatrice de prix transport</h1>
+        <p>
+          Entrez la ville de depart en France et le poids. Le prix est calcule avec
+          <strong>4 EUR / kg</strong> + une estimation essence selon la distance depuis Paris.
+        </p>
+      </section>
+
+      <section class="panel form-panel">
+        <h2>Simuler un devis</h2>
+
+        <form id="quoteForm" class="quote-form">
+          <label for="cityInput">Ville du client (France)</label>
+          <input id="cityInput" name="city" type="text" placeholder="Ex: Lyon" required />
+
+          <label for="kgInput">Poids (kg)</label>
+          <input id="kgInput" name="kg" type="number" min="0.1" step="0.1" placeholder="Ex: 12" required />
+
+          <div class="grid-2">
+            <div>
+              <label for="priceKgInput">Tarif kilo (EUR/kg)</label>
+              <input id="priceKgInput" name="priceKg" type="number" min="0" step="0.01" value="4" required />
+            </div>
+            <div>
+              <label for="fuelPriceInput">Prix carburant (EUR/L)</label>
+              <input id="fuelPriceInput" name="fuelPrice" type="number" min="0" step="0.01" value="1.95" required />
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div>
+              <label for="consumptionInput">Conso vehicule (L/100km)</label>
+              <input id="consumptionInput" name="consumption" type="number" min="1" step="0.1" value="7.5" required />
+            </div>
+            <div>
+              <label for="speedInput">Vitesse moyenne (km/h)</label>
+              <input id="speedInput" name="speed" type="number" min="20" step="1" value="90" required />
+            </div>
+          </div>
+
+          <button type="submit">Entrer</button>
+        </form>
+
+        <p id="status" class="status" aria-live="polite"></p>
+      </section>
+
+      <section class="panel result-panel" id="resultPanel" hidden>
+        <h2>Resultat du devis</h2>
+
+        <div class="result-grid">
+          <article class="item">
+            <h3>Ville</h3>
+            <p id="resultCity">-</p>
+          </article>
+          <article class="item">
+            <h3>Distance estimee</h3>
+            <p id="resultDistance">-</p>
+          </article>
+          <article class="item">
+            <h3>Duree estimee</h3>
+            <p id="resultDuration">-</p>
+          </article>
+          <article class="item">
+            <h3>Cout poids</h3>
+            <p id="resultWeightCost">-</p>
+          </article>
+          <article class="item">
+            <h3>Cout essence</h3>
+            <p id="resultFuelCost">-</p>
+          </article>
+          <article class="item total">
+            <h3>Total a payer</h3>
+            <p id="resultTotal">-</p>
+          </article>
+        </div>
+
+        <p class="note">
+          Calcul estime avec distance routiere approximee depuis Paris.
+          Les peages, main-d'oeuvre, retour vehicule et frais additionnels ne sont pas inclus.
+        </p>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
