@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>anis-transport-devis - IA voyage</title>
+    <meta
+      name="description"
+      content="Assistant IA voyage et transport France vers Tunisie. Reponses professionnelles pour villes, trajet et accompagnement client."
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="hero">
+        <div class="top-nav">
+          <p class="badge">anis-transport-devis</p>
+          <nav class="nav-links" aria-label="Navigation principale">
+            <a class="nav-link" href="index.html">Calculatrice</a>
+            <a class="nav-link active" href="ia.html">IA</a>
+            <a class="nav-link" href="valeur.html">Calculatrice-valeur</a>
+          </nav>
+        </div>
+        <h1>Assistant IA voyage France -> Tunisie</h1>
+        <p>
+          Posez vos questions (bonjour, merci, villes, accompagnement, trajet, transport).
+          L'assistant repond avec un ton professionnel et peut aussi vous poser des questions utiles.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>Discussion</h2>
+        <div id="chatLog" class="chat-log" aria-live="polite"></div>
+
+        <form id="chatForm" class="chat-form">
+          <label for="userMessage">Votre message</label>
+          <textarea id="userMessage" rows="3" placeholder="Ex: Bonjour, je suis a Lyon, comment ca se passe pour la Tunisie ?" required></textarea>
+          <button type="submit">Envoyer</button>
+        </form>
+      </section>
+    </main>
+
+    <script src="ia.js"></script>
+  </body>
+</html>
