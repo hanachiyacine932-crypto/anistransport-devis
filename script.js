@@ -1,10 +1,6 @@
 const quoteForm = document.getElementById("quoteForm");
 const cityInput = document.getElementById("cityInput");
 const kgInput = document.getElementById("kgInput");
-const priceKgInput = document.getElementById("priceKgInput");
-const fuelPriceInput = document.getElementById("fuelPriceInput");
-const consumptionInput = document.getElementById("consumptionInput");
-const speedInput = document.getElementById("speedInput");
 const statusEl = document.getElementById("status");
 const resultPanel = document.getElementById("resultPanel");
 
@@ -15,14 +11,16 @@ const resultWeightCost = document.getElementById("resultWeightCost");
 const resultFuelCost = document.getElementById("resultFuelCost");
 const resultTotal = document.getElementById("resultTotal");
 
-const STORAGE_KEY = "transport-calculator-v1";
-
 const PARIS = {
   lat: 48.8566,
   lon: 2.3522,
 };
 
 const ROAD_FACTOR = 1.23;
+const FIXED_PRICE_PER_KG = 4;
+const FIXED_FUEL_PRICE = 1;
+const FIXED_CONSUMPTION = 7.5;
+const FIXED_SPEED = 90;
 
 function setStatus(text, isError = false) {
   statusEl.textContent = text;
@@ -63,31 +61,6 @@ function haversineKm(lat1, lon1, lat2, lon2) {
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
-}
-
-function saveSettings() {
-  const payload = {
-    priceKg: toNumber(priceKgInput.value),
-    fuelPrice: toNumber(fuelPriceInput.value),
-    consumption: toNumber(consumptionInput.value),
-    speed: toNumber(speedInput.value),
-  };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-}
-
-function loadSettings() {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return;
-
-  try {
-    const parsed = JSON.parse(raw);
-    if (Number.isFinite(parsed.priceKg)) priceKgInput.value = parsed.priceKg;
-    if (Number.isFinite(parsed.fuelPrice)) fuelPriceInput.value = parsed.fuelPrice;
-    if (Number.isFinite(parsed.consumption)) consumptionInput.value = parsed.consumption;
-    if (Number.isFinite(parsed.speed)) speedInput.value = parsed.speed;
-  } catch (_err) {
-    // Ignore invalid local data.
-  }
 }
 
 async function findFrenchCityByName(name) {
@@ -143,17 +116,17 @@ quoteForm.addEventListener("submit", async (event) => {
 
   const city = cityInput.value.trim();
   const kg = toNumber(kgInput.value);
-  const priceKg = toNumber(priceKgInput.value);
-  const fuelPrice = toNumber(fuelPriceInput.value);
-  const consumption = toNumber(consumptionInput.value);
-  const speed = toNumber(speedInput.value);
+  const priceKg = FIXED_PRICE_PER_KG;
+  const fuelPrice = FIXED_FUEL_PRICE;
+  const consumption = FIXED_CONSUMPTION;
+  const speed = FIXED_SPEED;
 
   if (!city) {
     setStatus("Entrez une ville.", true);
     return;
   }
 
-  if (![kg, priceKg, fuelPrice, consumption, speed].every(Number.isFinite)) {
+  if (!Number.isFinite(kg)) {
     setStatus("Verifiez les nombres saisis.", true);
     return;
   }
@@ -188,7 +161,6 @@ quoteForm.addEventListener("submit", async (event) => {
       ...quote,
     });
 
-    saveSettings();
     setStatus("Devis calcule avec succes.");
   } catch (err) {
     setStatus(err.message || "Erreur inconnue.", true);
@@ -196,5 +168,4 @@ quoteForm.addEventListener("submit", async (event) => {
   }
 });
 
-loadSettings();
 setStatus("Pret. Entrez une ville et un poids pour calculer le tarif.");

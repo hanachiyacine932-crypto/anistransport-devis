@@ -26,7 +26,7 @@
         <h1>Calculatrice de prix transport</h1>
         <p>
           Entrez la ville de depart en France et le poids. Le prix est calcule avec
-          <strong>4 EUR / kg</strong> + une estimation essence selon la distance depuis Paris.
+          <strong>4 EUR / kg</strong> + une estimation essence fixe selon la distance depuis Paris.
         </p>
       </section>
 
@@ -39,28 +39,6 @@
 
           <label for="kgInput">Poids (kg)</label>
           <input id="kgInput" name="kg" type="number" min="0.1" step="0.1" placeholder="Ex: 12" required />
-
-          <div class="grid-2">
-            <div>
-              <label for="priceKgInput">Tarif kilo (EUR/kg)</label>
-              <input id="priceKgInput" name="priceKg" type="number" min="0" step="0.01" value="4" required />
-            </div>
-            <div>
-              <label for="fuelPriceInput">Prix carburant (EUR/L)</label>
-              <input id="fuelPriceInput" name="fuelPrice" type="number" min="0" step="0.01" value="1.95" required />
-            </div>
-          </div>
-
-          <div class="grid-2">
-            <div>
-              <label for="consumptionInput">Conso vehicule (L/100km)</label>
-              <input id="consumptionInput" name="consumption" type="number" min="1" step="0.1" value="7.5" required />
-            </div>
-            <div>
-              <label for="speedInput">Vitesse moyenne (km/h)</label>
-              <input id="speedInput" name="speed" type="number" min="20" step="1" value="90" required />
-            </div>
-          </div>
 
           <button type="submit">Entrer</button>
         </form>
