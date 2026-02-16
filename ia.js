@@ -1,81 +1,121 @@
 const chatLog = document.getElementById("chatLog");
 const chatForm = document.getElementById("chatForm");
 const userMessage = document.getElementById("userMessage");
+const quickPrompts = document.getElementById("quickPrompts");
+const explainMode = document.getElementById("explainMode");
 
-const BASE_PRICE_PER_KG = 4;
-const KM_RATE = 0.18;
-const ROUTE_DISCOUNT_FACTOR = 0.88;
-const OFF_ROUTE_FACTOR = 1.18;
+const blockedPatterns = [
+  "pirater",
+  "hacker un compte",
+  "bruteforce",
+  "ddos",
+  "malware",
+  "ransomware",
+  "voler",
+  "bypass",
+  "exploit",
+  "cracker wifi",
+  "injecter un virus",
+  "stealer",
+  "trojan",
+  "botnet",
+  "keylogger",
+  "payload",
+  "phishing kit",
+  "contourner",
+];
 
-const FRANCE_TO_TUNIS_KM = {
-  "saint-denis": 1650,
-  paris: 1650,
-  lyon: 1450,
-  marseille: 1030,
-  nice: 900,
-  toulouse: 1500,
-  lille: 1850,
-  nantes: 1750,
-  montpellier: 1200,
-  bordeaux: 1800,
-  strasbourg: 1750,
-  grenoble: 1350,
-  lemans: 1720,
-  "le mans": 1720,
-  meaux: 1680,
-  melun: 1630,
-};
+const topicBank = [
+  {
+    name: "bases cyber",
+    keywords: ["cyber", "securite", "risque", "menace", "vulnerabilite", "proteger", "defense"],
+    simple: "La cybersecurite, c'est proteger tes comptes, tes donnees et tes appareils contre les erreurs, les arnaques et les attaques.",
+    example: "Exemple: si ton mot de passe est reutilise partout, un seul piratage peut ouvrir tous tes comptes.",
+    action: "Action debutant: active MFA sur email + reseaux sociaux + banque.",
+  },
+  {
+    name: "internet reseau",
+    keywords: ["ip", "dns", "https", "internet", "routeur", "wifi", "port", "tcp", "udp", "vpn"],
+    simple: "Internet, c'est un reseau mondial. IP identifie un appareil, DNS traduit un nom en IP, HTTPS protege le trafic web.",
+    example: "Exemple: quand tu ecris un site, DNS trouve son adresse, puis HTTPS chiffre la connexion.",
+    action: "Action debutant: evite le wifi public sans VPN pour les comptes sensibles.",
+  },
+  {
+    name: "mots de passe",
+    keywords: ["mot de passe", "password", "mfa", "2fa", "authentification", "compte"],
+    simple: "Un bon mot de passe est long, unique, et accompagne d'un second facteur MFA.",
+    example: "Exemple: un gestionnaire de mots de passe cree des mots differents pour chaque site.",
+    action: "Action debutant: remplace 3 mots de passe reutilises aujourd'hui.",
+  },
+  {
+    name: "phishing",
+    keywords: ["phishing", "email", "sms", "arnaque", "faux lien", "piece jointe"],
+    simple: "Le phishing est une arnaque qui te pousse a cliquer ou donner des infos privees.",
+    example: "Exemple: 'urgence, ton compte ferme dans 5 min' + lien bizarre = tres suspect.",
+    action: "Action debutant: verifie l'expediteur et le domaine avant de cliquer.",
+  },
+  {
+    name: "linux",
+    keywords: ["linux", "terminal", "bash", "chmod", "sudo", "permissions", "journalctl"],
+    simple: "Linux est un systeme souvent utilise en cyber. Le terminal permet d'automatiser et d'administrer.",
+    example: "Exemple: limiter les permissions d'un fichier reduit les risques d'acces non voulu.",
+    action: "Action debutant: apprendre 10 commandes Linux de base et leurs usages.",
+  },
+  {
+    name: "python",
+    keywords: ["python", "script python", "boucle", "fonction", "variable", "automatiser"],
+    simple: "Python est ideal pour debuter: syntaxe simple, utile pour automatiser et analyser.",
+    example: "Exemple: script qui verifie la force d'un mot de passe sur plusieurs entrees.",
+    action: "Action debutant: ecrire un script qui detecte des emails suspects selon des mots-cles.",
+  },
+  {
+    name: "javascript",
+    keywords: ["javascript", "js", "frontend", "node", "dom", "validation"],
+    simple: "JavaScript sert a rendre les pages interactives et valider les donnees cote client.",
+    example: "Exemple: verifier qu'un formulaire contient un email valide avant envoi.",
+    action: "Action debutant: coder une validation de mot de passe en JS.",
+  },
+  {
+    name: "web security",
+    keywords: ["xss", "sql", "sqli", "csrf", "cookie", "session", "owasp", "injection"],
+    simple: "La securite web protege les applis contre les injections, scripts malveillants et usurpation de session.",
+    example: "Exemple: utiliser des requetes preparees bloque une grande partie des SQL injections.",
+    action: "Action debutant: retenir XSS, SQLi, CSRF + une protection pour chaque.",
+  },
+  {
+    name: "soc logs",
+    keywords: ["soc", "log", "siem", "ioc", "alerte", "incident", "forensic"],
+    simple: "Le SOC surveille les alertes et logs pour detecter des comportements anormaux rapidement.",
+    example: "Exemple: 30 tentatives echouees admin depuis une IP inconnue = alerte forte.",
+    action: "Action debutant: apprendre un format simple de rapport incident (quoi, quand, impact, action).",
+  },
+  {
+    name: "cloud",
+    keywords: ["cloud", "aws", "azure", "gcp", "iam", "bucket", "secret", "kubernetes"],
+    simple: "En cloud, la securite commence par les droits IAM, la configuration et la surveillance.",
+    example: "Exemple: un bucket public par erreur peut exposer des donnees sensibles.",
+    action: "Action debutant: verifier les permissions minimales sur chaque compte cloud.",
+  },
+  {
+    name: "carriere",
+    keywords: ["metier", "job", "carriere", "soc analyste", "pentest", "grc", "cv", "entretien"],
+    simple: "Tu peux entrer en cyber par plusieurs chemins: SOC, GRC, admin systeme, dev securite.",
+    example: "Exemple: profil debutant SOC = reseau + logs + communication + rigueur.",
+    action: "Action debutant: cree un portfolio avec mini-projets et comptes-rendus de labs.",
+  },
+];
 
-const ON_ROUTE_CITIES = new Set([
-  "saint-denis",
-  "paris",
-  "melun",
-  "sens",
-  "auxerre",
-  "beaune",
-  "lyon",
-  "valence",
-  "avignon",
-  "aix-en-provence",
-  "marseille",
-  "nice",
-]);
-
-const TUNISIA_CITY_ADDON = {
-  tunis: 0,
-  ariana: 6,
-  benarous: 8,
-  manouba: 8,
-  nabeul: 16,
-  hammamet: 18,
-  bizerte: 24,
-  beja: 20,
-  jendouba: 24,
-  zaghouan: 18,
-  siliana: 22,
-  kef: 28,
-  kairouan: 24,
-  sousse: 22,
-  monastir: 24,
-  mahdia: 26,
-  sfax: 32,
-  sidibouzid: 28,
-  gabes: 36,
-  medenine: 40,
-  tataouine: 48,
-  tozeur: 44,
-  kebili: 42,
-  gafsa: 36,
-};
-
-const BRAND_KEYWORDS = ["nike", "gucci", "louis vuitton", "adidas", "dior", "chanel", "prada"];
-
-const memory = {
-  origin: "saint-denis",
-  destination: "tunis",
-  weightKg: null,
-  declaredValue: null,
-  itemType: null,
+const tinyDictionary = {
+  hash: "Hash: empreinte irreversible pour verifier une information.",
+  chiffrement: "Chiffrement: rendre les donnees illisibles sans cle.",
+  encodage: "Encodage: transformer un format pour transport/compatibilite (pas une protection forte).",
+  api: "API: interface qui permet a deux applications de communiquer.",
+  cookie: "Cookie: petite donnee stockee par le navigateur.",
+  session: "Session: etat de connexion d'un utilisateur.",
+  firewall: "Pare-feu: filtre le trafic reseau entrant/sortant.",
+  malware: "Malware: logiciel malveillant.",
+  ransomware: "Ransomware: malware qui chiffre les fichiers contre rancon.",
+  siem: "SIEM: outil central qui collecte et analyse les logs de securite.",
 };
 
 function normalize(text) {
@@ -83,7 +123,9 @@ function normalize(text) {
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .replace(/'/g, " ");
+    .replace(/'/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function addMsg(role, text) {
@@ -91,7 +133,7 @@ function addMsg(role, text) {
   row.className = `chat-msg ${role}`;
 
   const who = document.createElement("strong");
-  who.textContent = role === "assistant" ? "Assistant" : "Vous";
+  who.textContent = role === "assistant" ? "Coach IA" : "Vous";
 
   const body = document.createElement("p");
   body.textContent = text;
@@ -101,238 +143,194 @@ function addMsg(role, text) {
   chatLog.scrollTop = chatLog.scrollHeight;
 }
 
-function toMoney(value) {
-  return `${value.toFixed(2)} EUR`;
+function blockedRequest(clean) {
+  return blockedPatterns.some((token) => clean.includes(token));
 }
 
-function extractWeightKg(text) {
-  const m = text.match(/(\d+(?:[.,]\d+)?)\s*(kg|kilo|kilos)\b/i);
-  if (!m) return null;
-  return Number(m[1].replace(",", "."));
+function countTopicHits(clean, topic) {
+  return topic.keywords.reduce((count, keyword) => {
+    if (clean.includes(keyword)) return count + 1;
+    return count;
+  }, 0);
 }
 
-function extractValue(text) {
-  const direct = text.match(/valeur\s*(?:de|:)?\s*(\d+(?:[.,]\d+)?)/i);
-  if (direct) return Number(direct[1].replace(",", "."));
+function pickBestTopics(clean) {
+  const scored = topicBank
+    .map((topic) => ({ topic, score: countTopicHits(clean, topic) }))
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score);
 
-  const euro = text.match(/(\d+(?:[.,]\d+)?)\s*(eur|euro|euros|€)\b/i);
-  if (euro) return Number(euro[1].replace(",", "."));
+  return scored.slice(0, 2).map((item) => item.topic);
+}
 
+function explainWord(clean) {
+  const keys = Object.keys(tinyDictionary);
+  for (const key of keys) {
+    if (clean.includes(`c est quoi ${key}`) || clean.includes(`def ${key}`) || clean.includes(`definition ${key}`) || clean === key) {
+      return tinyDictionary[key];
+    }
+  }
   return null;
 }
 
-function hasBrand(text) {
-  return BRAND_KEYWORDS.some((k) => text.includes(k));
-}
-
-function detectItemType(text) {
-  if (/(sac|chaussure|nike|gucci|marque|valeur|luxe|tableau|bijou)/.test(text)) return "valeur";
-  if (/(valise|bagage|colis)/.test(text)) return "standard";
-  return null;
-}
-
-function listAllCities(mapObj) {
-  return Object.keys(mapObj)
-    .map((x) => x)
-    .join(", ");
-}
-
-function extractCities(clean) {
-  const franceCities = Object.keys(FRANCE_TO_TUNIS_KM);
-  const tnCities = Object.keys(TUNISIA_CITY_ADDON);
-
-  let origin = null;
-  let destination = null;
-
-  for (const c of franceCities) {
-    if (clean.includes(c)) {
-      origin = c;
-      break;
-    }
+function buildStylePrefix(mode) {
+  if (mode === "ultra") {
+    return "Mode ultra simple: ";
   }
-
-  for (const c of tnCities) {
-    if (clean.includes(c)) {
-      destination = c;
-      break;
-    }
+  if (mode === "pro") {
+    return "Mode technique progressif: ";
   }
-
-  return { origin, destination };
+  return "Mode normal: ";
 }
 
-function computeCustoms(value, isBrand) {
-  if (!Number.isFinite(value) || value <= 0) return 0;
-
-  let rate = 0;
-  if (value <= 80) rate = 0;
-  else if (value <= 300) rate = 0.07;
-  else if (value <= 1000) rate = 0.12;
-  else rate = 0.18;
-
-  if (isBrand) rate += 0.05;
-  return value * rate;
-}
-
-function computeQuote() {
-  const origin = memory.origin;
-  const destination = memory.destination;
-  const weight = memory.weightKg || 0;
-
-  const km = FRANCE_TO_TUNIS_KM[origin] || FRANCE_TO_TUNIS_KM["saint-denis"];
-  const routeFactor = ON_ROUTE_CITIES.has(origin) ? ROUTE_DISCOUNT_FACTOR : OFF_ROUTE_FACTOR;
-  const isValueItem = memory.itemType === "valeur";
-  const baseTransport = isValueItem ? 0 : weight * BASE_PRICE_PER_KG;
-  const distanceCost = km * KM_RATE;
-  const cityAddon = TUNISIA_CITY_ADDON[destination] || 0;
-
-  const declaredValue = memory.declaredValue || 0;
-  const isBrandItem = isValueItem && hasBrand(normalize(latestUserText));
-
-  const handling = isValueItem ? 12 : 0;
-  const insurance = isValueItem && declaredValue > 0 ? Math.max(8, declaredValue * 0.05) : 0;
-  const customs = isValueItem ? computeCustoms(declaredValue, isBrandItem) : 0;
-  const valueService = isValueItem && declaredValue > 0 ? declaredValue * 0.08 : 0;
-
-  const subtotal = (baseTransport + distanceCost) * routeFactor;
-  const total = subtotal + cityAddon + handling + insurance + customs + valueService;
-
-  const routeTxt = ON_ROUTE_CITIES.has(origin)
-    ? "Ville sur votre route: reduction appliquee."
-    : "Ville hors route: majoration appliquee.";
+function answerRoadmap(clean) {
+  if (!clean.includes("90 jours") && !clean.includes("plan") && !clean.includes("roadmap")) {
+    return null;
+  }
 
   return [
-    `Voici votre estimation pro: ${toMoney(total)}`,
-    `- Depart: ${origin} -> Destination: ${destination}`,
-    isValueItem
-      ? `- Calcul objet de valeur (sans poids): valeur declaree = ${toMoney(declaredValue)}`
-      : `- Poids: ${weight.toFixed(2)} kg a ${toMoney(BASE_PRICE_PER_KG)}/kg = ${toMoney(baseTransport)}`,
-    `- Distance estimee ${origin} -> Tunis: ${km} km, cout distance: ${toMoney(distanceCost)}`,
-    `- Ajustement route: ${routeTxt}`,
-    `- Ajustement ville Tunisie: ${toMoney(cityAddon)}`,
-    isValueItem ? `- Objet de valeur: oui (emballage securise + assurance + douane)` : "- Objet de valeur: non",
-    isValueItem ? `- Service valeur: ${toMoney(valueService)}` : "- Service valeur: 0.00 EUR",
-    isValueItem ? `- Frais securisation: ${toMoney(handling)}` : "- Frais securisation: 0.00 EUR",
-    isValueItem ? `- Assurance estimee: ${toMoney(insurance)}` : "- Assurance estimee: 0.00 EUR",
-    isValueItem ? `- Douane estimee: ${toMoney(customs)}` : "- Douane estimee: 0.00 EUR",
-    `- Total estime: ${toMoney(total)}`,
-    "Si vous voulez, je peux maintenant vous poser 3 questions pour vous donner un devis plus precis.",
-  ].join("\n");
+    "Plan 90 jours pour debuter de zero:",
+    "Mois 1: hygiene numerique, reseau de base, mots de passe, phishing, Linux debutant.",
+    "Mois 2: Python/JS de base, securite web (XSS/SQLi/CSRF), lecture de logs.",
+    "Mois 3: mini-projets, simulation incident, portfolio, revision + candidatures.",
+    "Rythme: 30 a 60 min/jour, 1 revision hebdo, 1 exercice pratique/jour.",
+  ].join(" ");
 }
 
-let latestUserText = "";
+function answerExercise(clean) {
+  if (!clean.includes("exercice") && !clean.includes("question reponse") && !clean.includes("fiche")) {
+    return null;
+  }
 
-function answer(rawText) {
-  latestUserText = rawText;
+  if (clean.includes("python")) {
+    return [
+      "Exercice Python debutant:",
+      "But: detecter si un mot de passe est faible.",
+      "Etapes: lire une chaine, verifier longueur, verifier chiffres/symboles, afficher score.",
+      "Bonus: conseiller une correction automatique.",
+    ].join(" ");
+  }
+
+  if (clean.includes("javascript") || clean.includes("js")) {
+    return [
+      "Exercice JavaScript debutant:",
+      "Creer un formulaire avec email + mot de passe.",
+      "Verifier format email et robustesse mot de passe.",
+      "Afficher des messages clairs a l'utilisateur.",
+    ].join(" ");
+  }
+
+  if (clean.includes("20") || clean.includes("question/reponse")) {
+    return [
+      "Pack 20 questions debutant (version courte):",
+      "1) C'est quoi phishing? 2) Pourquoi MFA? 3) C'est quoi IP? 4) C'est quoi DNS?",
+      "5) Pourquoi mettre a jour? 6) C'est quoi un malware? 7) A quoi sert un pare-feu?",
+      "8) C'est quoi un log? 9) C'est quoi XSS? 10) C'est quoi SQL injection?",
+      "11) Pourquoi sauvegarder? 12) C'est quoi un VPN? 13) C'est quoi un hash?",
+      "14) C'est quoi chiffrement? 15) C'est quoi SIEM? 16) C'est quoi IAM?",
+      "17) C'est quoi moindre privilege? 18) C'est quoi incident response?",
+      "19) C'est quoi SOC? 20) C'est quoi OWASP?",
+      "Dis-moi 'developpe la question X' pour detail.",
+    ].join(" ");
+  }
+
+  return [
+    "Fiche de revision du jour:",
+    "1) 5 definitions. 2) 3 exemples d'attaque. 3) 3 protections. 4) 1 mini-exercice. 5) Resume en 5 lignes.",
+  ].join(" ");
+}
+
+function answerDifference(clean) {
+  if (clean.includes("difference") && clean.includes("hash") && (clean.includes("chiffrement") || clean.includes("encodage"))) {
+    return [
+      "Difference rapide:",
+      "Hash = sens unique (verification).",
+      "Chiffrement = reversible avec cle (confidentialite).",
+      "Encodage = changement de format (transport), pas une vraie protection.",
+    ].join(" ");
+  }
+
+  return null;
+}
+
+function answerByTopics(clean, mode) {
+  const topics = pickBestTopics(clean);
+  if (!topics.length) {
+    return [
+      `${buildStylePrefix(mode)}Je peux repondre sur cyber, codage, Linux, reseau, web, cloud, SOC, carriere.`,
+      "Si tu veux, ecris: 'explique [mot] comme un debutant'.",
+      "Exemple: 'explique DNS tres simplement'.",
+    ].join(" ");
+  }
+
+  const parts = [buildStylePrefix(mode)];
+  for (const topic of topics) {
+    if (mode === "ultra") {
+      parts.push(topic.simple, topic.action);
+      continue;
+    }
+
+    if (mode === "pro") {
+      parts.push(topic.simple, topic.example, `Mini plan: ${topic.action}`);
+      continue;
+    }
+
+    parts.push(topic.simple, topic.example, topic.action);
+  }
+
+  parts.push("Tu veux que je transforme ca en mini cours 10 minutes?");
+  return parts.join(" ");
+}
+
+function answerQuestion(rawText) {
   const clean = normalize(rawText);
+  const mode = explainMode.value;
 
-  const { origin, destination } = extractCities(clean);
-  const weight = extractWeightKg(rawText);
-  const value = extractValue(rawText);
-  const detectedType = detectItemType(clean);
+  const glossaryAnswer = explainWord(clean);
+  if (glossaryAnswer) return `${buildStylePrefix(mode)}${glossaryAnswer}`;
 
-  if (clean.includes("77")) memory.origin = "meaux";
-  if (origin) memory.origin = origin;
-  if (destination) memory.destination = destination;
-  if (Number.isFinite(weight) && weight > 0) memory.weightKg = weight;
-  if (Number.isFinite(value) && value >= 0) memory.declaredValue = value;
-  if (detectedType) memory.itemType = detectedType;
+  const roadmapAnswer = answerRoadmap(clean);
+  if (roadmapAnswer) return `${buildStylePrefix(mode)}${roadmapAnswer}`;
 
-  if (/\b(bonjour|salut|hello|bonsoir)\b/.test(clean)) {
-    return "Bonjour et bienvenue. Je suis la pour vous accompagner de la France vers la Tunisie. Vous partez de quelle ville et avec quel poids ?";
-  }
+  const exerciseAnswer = answerExercise(clean);
+  if (exerciseAnswer) return `${buildStylePrefix(mode)}${exerciseAnswer}`;
 
-  if (/\b(ca va|comment ca va|tu vas bien)\b/.test(clean)) {
-    return "Je vais bien, merci. Et vous ? Je suis pret a vous aider avec un devis clair et rapide.";
-  }
+  const diffAnswer = answerDifference(clean);
+  if (diffAnswer) return `${buildStylePrefix(mode)}${diffAnswer}`;
 
-  if (/\b(merci|merci beaucoup)\b/.test(clean)) {
-    return "Avec plaisir. Souhaitez-vous que je calcule un devis maintenant ou que je vous explique les frais de douane ?";
-  }
-
-  if (/\b(bonne journee|au revoir|a bientot|bye)\b/.test(clean)) {
-    return "Merci pour votre confiance. Bonne journee, je reste disponible quand vous voulez.";
-  }
-
-  if (/\b(pourquoi)\b/.test(clean)) {
-    return "Le prix change selon le poids, la distance depuis votre ville de depart, le fait d'etre sur route ou hors route, et la douane si c'est un objet de valeur.";
-  }
-
-  if (/\b(villes de tunisie|toutes les villes|ville tunisie|tunisie villes)\b/.test(clean)) {
-    return `Je prends en charge ces villes en Tunisie: ${listAllCities(TUNISIA_CITY_ADDON)}.`;
-  }
-
-  if (/\b(douane|frais douane|taxe)\b/.test(clean)) {
-    return [
-      "Douane estimee pour objet de valeur:",
-      "- 0 a 80 EUR: 0%",
-      "- 80.01 a 300 EUR: 7%",
-      "- 300.01 a 1000 EUR: 12%",
-      "- Au-dessus de 1000 EUR: 18%",
-      "- Article de marque: +5% estime",
-      "Si vous voulez, donnez la valeur de l'objet et je calcule directement.",
-    ].join("\n");
-  }
-
-  if (/\b(c est quoi le prix|quel prix|combien|devis|prix)\b/.test(clean)) {
-    if (memory.itemType === "valeur") {
-      if (!Number.isFinite(memory.declaredValue) || memory.declaredValue <= 0) {
-        return "Pour un objet de valeur, je n'ai pas besoin du poids. Donnez juste la valeur declaree (ex: 450 EUR).";
-      }
-      return computeQuote();
-    }
-
-    if (!memory.weightKg) {
-      return "Je peux calculer le prix tout de suite. Donnez-moi juste le poids (ex: 10 kg) et votre ville de depart en France.";
-    }
-    return computeQuote();
-  }
-
-  if (/\b(hors route|campagne|loin)\b/.test(clean)) {
-    return "Compris. Si ce n'est pas sur votre trajet principal, le prix est un peu majore. Donnez-moi la ville exacte et le poids pour un calcul precise.";
-  }
-
-  if (/\b(je veux|j ai envie|je souhaite|aider|accompagne|accompagnement)\b/.test(clean)) {
-    return [
-      "Bien sur, je vous accompagne avec plaisir.",
-      "Pour un devis precis, repondez a ces 3 questions:",
-      "1. Ville de depart en France ?",
-      "2. Ville d'arrivee en Tunisie ?",
-      "3. Poids en kg et si c'est un objet de valeur ou une valise ?",
-    ].join("\n");
-  }
-
-  if (/\b(tunisie|france|trajet|voyage|transport|valise|sac|nike|gucci|marque)\b/.test(clean)) {
-    if (memory.itemType === "valeur") {
-      if (!Number.isFinite(memory.declaredValue) || memory.declaredValue <= 0) {
-        return "Objet de valeur detecte. Je n'ai pas besoin du poids: indiquez seulement la valeur declaree en EUR.";
-      }
-      return computeQuote();
-    }
-
-    if (memory.weightKg) return computeQuote();
-
-    return [
-      "Je suis pret a calculer.",
-      "Dites-moi votre ville de depart en France, votre ville en Tunisie et le poids.",
-      "Exemple: 'Je pars de Lyon vers Sfax, 14 kg, sac Nike valeur 220 EUR'.",
-    ].join("\n");
-  }
-
-  return "Je vous ecoute. Dites-moi simplement votre besoin, et je vous reponds de facon claire et professionnelle.";
+  return answerByTopics(clean, mode);
 }
 
 chatForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  const text = userMessage.value.trim();
-  if (!text) return;
 
-  addMsg("user", text);
-  addMsg("assistant", answer(text));
+  const raw = userMessage.value.trim();
+  if (!raw) return;
+
+  addMsg("user", raw);
   userMessage.value = "";
+
+  const clean = normalize(raw);
+  if (blockedRequest(clean)) {
+    addMsg(
+      "assistant",
+      "Je ne peux pas aider pour attaquer, nuire ou contourner illegalement. Je peux t'aider en defense: prevention, detection, durcissement, et apprentissage legal pas a pas."
+    );
+    return;
+  }
+
+  addMsg("assistant", answerQuestion(raw));
+});
+
+quickPrompts.addEventListener("click", (event) => {
+  const btn = event.target.closest(".prompt-btn");
+  if (!btn) return;
+
+  userMessage.value = btn.textContent.trim();
+  chatForm.requestSubmit();
 });
 
 addMsg(
   "assistant",
-  "Bonjour et bienvenue chez anis-transport-devis. Je peux vous donner le prix selon le kilo, la distance, la route, la douane et le type d'objet. Vous partez de quelle ville ?"
+  "Bienvenue. Dis simplement: 'je pars de zero', et je te guide etape par etape jusqu'a un vrai niveau pratique."
 );

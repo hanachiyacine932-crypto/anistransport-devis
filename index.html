@@ -3,90 +3,213 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>anis-transport-devis - Devis Transport Paris</title>
+    <title>CyberStart - Debuter en cybersecurite de zero</title>
     <meta
       name="description"
-      content="Calculatrice de devis transport depuis Paris vers toutes les villes de France: prix au kilo, distance, essence et total."
+      content="Site debutant zero: apprentissage cybersecurite pas a pas, mots simples, quiz, exercices et plan quotidien personalise."
     />
     <meta name="robots" content="index,follow" />
-    <meta property="og:title" content="anis-transport-devis - Calculatrice Devis Transport Paris" />
-    <meta
-      property="og:description"
-      content="Estimez rapidement le cout de transport selon le poids et la ville de depart en France."
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="fr_FR" />
-    <link rel="sitemap" type="application/xml" href="sitemap.xml" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <main class="wrap">
-      <section class="hero">
+    <main class="shell">
+      <section class="hero hero-home">
         <div class="top-nav">
-          <p class="badge">anis-transport-devis</p>
+          <p class="badge">CyberStart Zero</p>
           <nav class="nav-links" aria-label="Navigation principale">
-            <a class="nav-link active" href="index.html">Calculatrice</a>
-            <a class="nav-link" href="ia.html">IA</a>
-            <a class="nav-link" href="valeur.html">Calculatrice-valeur</a>
+            <a class="nav-link active" href="index.html">Academie zero</a>
+            <a class="nav-link" href="ia.html">Coach IA</a>
+            <a class="nav-link" href="valeur.html">Cyber Game</a>
           </nav>
         </div>
-        <h1>Calculatrice de prix transport</h1>
+
+        <h1>Tu pars de zero? Ce site est fait pour toi</h1>
         <p>
-          Entrez la ville de depart en France et le poids. Le prix est calcule avec
-          <strong>4 EUR / kg</strong> + une estimation essence fixe selon la distance depuis Paris.
+          Aucun pre-requis. On commence avec des mots tres simples, puis on monte pas a pas.
+          Objectif: comprendre la cybersecurite pour te proteger et evoluer proprement.
         </p>
-      </section>
 
-      <section class="panel form-panel">
-        <h2>Simuler un devis</h2>
-
-        <form id="quoteForm" class="quote-form">
-          <label for="cityInput">Ville du client (France)</label>
-          <input id="cityInput" name="city" type="text" placeholder="Ex: Lyon" required />
-
-          <label for="kgInput">Poids (kg)</label>
-          <input id="kgInput" name="kg" type="number" min="0.1" step="0.1" placeholder="Ex: 12" required />
-
-          <button type="submit">Entrer</button>
-        </form>
-
-        <p id="status" class="status" aria-live="polite"></p>
-      </section>
-
-      <section class="panel result-panel" id="resultPanel" hidden>
-        <h2>Resultat du devis</h2>
-
-        <div class="result-grid">
-          <article class="item">
-            <h3>Ville</h3>
-            <p id="resultCity">-</p>
+        <div class="hero-stats">
+          <article>
+            <span id="moduleProgress">0/10</span>
+            <p>Etapes debloquees</p>
           </article>
-          <article class="item">
-            <h3>Distance estimee</h3>
-            <p id="resultDistance">-</p>
+          <article>
+            <span id="quizProgress">0%</span>
+            <p>Quiz de base</p>
           </article>
-          <article class="item">
-            <h3>Duree estimee</h3>
-            <p id="resultDuration">-</p>
-          </article>
-          <article class="item">
-            <h3>Cout poids</h3>
-            <p id="resultWeightCost">-</p>
-          </article>
-          <article class="item">
-            <h3>Cout essence</h3>
-            <p id="resultFuelCost">-</p>
-          </article>
-          <article class="item total">
-            <h3>Total a payer</h3>
-            <p id="resultTotal">-</p>
+          <article>
+            <span id="labProgress">0</span>
+            <p>Exercices pratiques</p>
           </article>
         </div>
+      </section>
 
-        <p class="note">
-          Calcul estime avec distance routiere approximee depuis Paris.
-          Les peages, main-d'oeuvre, retour vehicule et frais additionnels ne sont pas inclus.
-        </p>
+      <section class="panel">
+        <h2>Parcours zero absolu (ordre conseille)</h2>
+        <div class="track-grid" id="trackGrid">
+          <article class="track-card" data-track="step1">
+            <h3>1. C'est quoi internet?</h3>
+            <p>Comprendre site web, application, compte, donnees, serveur.</p>
+            <button class="toggle-lesson" type="button">Voir la lecon</button>
+          </article>
+          <article class="track-card" data-track="step2">
+            <h3>2. C'est quoi un risque?</h3>
+            <p>Menace, erreur humaine, fraude, fuite de donnees.</p>
+            <button class="toggle-lesson" type="button">Voir la lecon</button>
+          </article>
+          <article class="track-card" data-track="step3">
+            <h3>3. Mots de passe solides</h3>
+            <p>Creer des mots de passe uniques et utiliser MFA.</p>
+            <button class="toggle-lesson" type="button">Voir la lecon</button>
+          </article>
+          <article class="track-card" data-track="step4">
+            <h3>4. Reconnaitre le phishing</h3>
+            <p>Verifier email, lien, urgence artificielle, piece jointe.</p>
+            <button class="toggle-lesson" type="button">Voir la lecon</button>
+          </article>
+          <article class="track-card" data-track="step5">
+            <h3>5. Bases reseau</h3>
+            <p>IP, DNS, routeur, wifi public, VPN en langage simple.</p>
+            <button class="toggle-lesson" type="button">Voir la lecon</button>
+          </article>
+          <article class="track-card" data-track="step6">
+            <h3>6. Bases codage</h3>
+            <p>Variable, fonction, condition, bug, commentaire.</p>
+            <button class="toggle-lesson" type="button">Voir la lecon</button>
+          </article>
+          <article class="track-card" data-track="step7">
+            <h3>7. Securite web</h3>
+            <p>XSS, injection SQL, cookies, sessions, protections de base.</p>
+            <button class="toggle-lesson" type="button">Voir la lecon</button>
+          </article>
+          <article class="track-card" data-track="step8">
+            <h3>8. Logs et alertes</h3>
+            <p>Lire des traces, reperer une activite inhabituelle.</p>
+            <button class="toggle-lesson" type="button">Voir la lecon</button>
+          </article>
+          <article class="track-card" data-track="step9">
+            <h3>9. Incident: que faire?</h3>
+            <p>Stopper, isoler, signaler, conserver les preuves, corriger.</p>
+            <button class="toggle-lesson" type="button">Voir la lecon</button>
+          </article>
+          <article class="track-card" data-track="step10">
+            <h3>10. Suite de carriere</h3>
+            <p>Chemins metiers: SOC, pentest legal, GRC, cloud security.</p>
+            <button class="toggle-lesson" type="button">Voir la lecon</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel lesson-panel lesson-overlay" id="lessonPanel" hidden>
+        <button id="closeLessonView" class="ghost" type="button">Retourner a la page d'accueil</button>
+        <h2 id="lessonTitle">Lecon</h2>
+        <p id="lessonIntro"></p>
+        <h3>Obligatoire a savoir</h3>
+        <ul id="lessonMustKnow" class="resource-list"></ul>
+        <h3>Checklist pratique</h3>
+        <ul id="lessonChecklist" class="resource-list"></ul>
+        <h3>Exercice a faire</h3>
+        <p id="lessonExercise" class="tiny-note"></p>
+        <button id="markLessonDone" type="button">Marquer cette lecon comme apprise</button>
+        <p id="lessonStatus" class="status" aria-live="polite"></p>
+      </section>
+
+      <section class="panel split-panel">
+        <div>
+          <h2>Plan automatique selon ton temps</h2>
+          <form id="starterForm" class="quiz-form">
+            <label for="dailyMinutes">Combien de minutes par jour?</label>
+            <select id="dailyMinutes" required>
+              <option value="">Choisir</option>
+              <option value="15">15 minutes</option>
+              <option value="30">30 minutes</option>
+              <option value="60">60 minutes</option>
+            </select>
+
+            <label for="goalChoice">Ton objectif principal</label>
+            <select id="goalChoice" required>
+              <option value="">Choisir</option>
+              <option value="protection">Me proteger au quotidien</option>
+              <option value="metier">Trouver un metier en cyber</option>
+              <option value="code">Apprendre code + cyber</option>
+            </select>
+
+            <button type="submit">Creer mon plan debutant</button>
+          </form>
+          <div id="starterOutput" class="output" aria-live="polite"></div>
+        </div>
+
+        <div>
+          <h2>Glossaire ultra simple</h2>
+          <p class="tiny-note">Clique un mot pour une explication simple.</p>
+          <div class="term-grid" id="termGrid">
+            <button class="ghost term-btn" type="button" data-term="phishing">Phishing</button>
+            <button class="ghost term-btn" type="button" data-term="mfa">MFA</button>
+            <button class="ghost term-btn" type="button" data-term="hash">Hash</button>
+            <button class="ghost term-btn" type="button" data-term="chiffrement">Chiffrement</button>
+            <button class="ghost term-btn" type="button" data-term="vpn">VPN</button>
+            <button class="ghost term-btn" type="button" data-term="firewall">Pare-feu</button>
+            <button class="ghost term-btn" type="button" data-term="xss">XSS</button>
+            <button class="ghost term-btn" type="button" data-term="sqli">SQL injection</button>
+          </div>
+          <div id="termOutput" class="output" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="panel split-panel">
+        <div>
+          <h2>Quiz debutant ultra simple</h2>
+          <form id="quizForm" class="quiz-form">
+            <fieldset>
+              <legend>1) Si un email te stresse pour cliquer vite, c'est souvent:</legend>
+              <label><input type="radio" name="q1" value="a" required /> Normal</label>
+              <label><input type="radio" name="q1" value="b" /> Suspect</label>
+            </fieldset>
+
+            <fieldset>
+              <legend>2) Bonne pratique mot de passe:</legend>
+              <label><input type="radio" name="q2" value="a" required /> Le meme partout</label>
+              <label><input type="radio" name="q2" value="b" /> Unique + MFA</label>
+            </fieldset>
+
+            <fieldset>
+              <legend>3) Si tu as un doute de piratage:</legend>
+              <label><input type="radio" name="q3" value="a" required /> Tu ignores</label>
+              <label><input type="radio" name="q3" value="b" /> Tu signales vite</label>
+            </fieldset>
+
+            <fieldset>
+              <legend>4) Le role de la cybersecurite:</legend>
+              <label><input type="radio" name="q4" value="a" required /> Proteger donnees et services</label>
+              <label><input type="radio" name="q4" value="b" /> Casser des systemes</label>
+            </fieldset>
+
+            <button type="submit">Corriger le quiz</button>
+          </form>
+          <p id="quizStatus" class="status" aria-live="polite"></p>
+        </div>
+
+        <div>
+          <h2>Mini-lab pratique</h2>
+          <p class="tiny-note">Objectif: apprendre a reperer et corriger.</p>
+
+          <form id="labForm" class="lab-form">
+            <label for="mailCheck">Message: "Ton compte sera ferme dans 5 min, clique ici"</label>
+            <select id="mailCheck" required>
+              <option value="">Choisis</option>
+              <option value="safe">Confiance</option>
+              <option value="risk">Risque phishing</option>
+            </select>
+
+            <label for="passwordInput">Ecris un exemple de mot de passe</label>
+            <input id="passwordInput" type="text" placeholder="Ex: MonPass!2026Securise" required />
+
+            <button type="submit">Verifier</button>
+          </form>
+
+          <div id="labOutput" class="output" aria-live="polite"></div>
+        </div>
       </section>
     </main>
 

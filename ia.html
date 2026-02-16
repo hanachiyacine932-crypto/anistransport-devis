@@ -3,40 +3,79 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>anis-transport-devis - IA voyage</title>
+    <title>CyberStart - Coach IA debutant infini</title>
     <meta
       name="description"
-      content="Assistant IA voyage et transport France vers Tunisie. Reponses professionnelles pour villes, trajet et accompagnement client."
+      content="Coach IA debutant zero: reponses simples, plans pas a pas, questions cyber/codage, exercices et revision defensive."
     />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <main class="wrap">
+    <main class="shell">
       <section class="hero">
         <div class="top-nav">
-          <p class="badge">anis-transport-devis</p>
+          <p class="badge">CyberStart Coach</p>
           <nav class="nav-links" aria-label="Navigation principale">
-            <a class="nav-link" href="index.html">Calculatrice</a>
-            <a class="nav-link active" href="ia.html">IA</a>
-            <a class="nav-link" href="valeur.html">Calculatrice-valeur</a>
+            <a class="nav-link" href="index.html">Academie zero</a>
+            <a class="nav-link active" href="ia.html">Coach IA</a>
+            <a class="nav-link" href="valeur.html">Cyber Game</a>
           </nav>
         </div>
-        <h1>Assistant IA voyage France -> Tunisie</h1>
+
+        <h1>Coach IA: explique-moi comme si je commence aujourd'hui</h1>
         <p>
-          Posez vos questions (bonjour, merci, villes, accompagnement, trajet, transport).
-          L'assistant repond avec un ton professionnel et peut aussi vous poser des questions utiles.
+          Tu peux poser des questions tres simples, tres longues, ou tres techniques.
+          Le coach simplifie, reformule, donne des exemples et des exercices.
         </p>
       </section>
 
-      <section class="panel">
-        <h2>Discussion</h2>
-        <div id="chatLog" class="chat-log" aria-live="polite"></div>
+      <section class="panel split-panel">
+        <div>
+          <h2>Discussion</h2>
+          <div id="chatLog" class="chat-log" aria-live="polite"></div>
 
-        <form id="chatForm" class="chat-form">
-          <label for="userMessage">Votre message</label>
-          <textarea id="userMessage" rows="3" placeholder="Ex: Bonjour, je suis a Lyon, comment ca se passe pour la Tunisie ?" required></textarea>
-          <button type="submit">Envoyer</button>
-        </form>
+          <form id="chatForm" class="chat-form">
+            <label for="userMessage">Ta question</label>
+            <textarea
+              id="userMessage"
+              rows="4"
+              placeholder="Ex: c'est quoi une adresse IP, comme si j'ai 8 ans?"
+              required
+            ></textarea>
+            <button type="submit">Envoyer</button>
+          </form>
+        </div>
+
+        <div>
+          <h2>Mode de reponse</h2>
+          <label for="explainMode">Niveau d'explication</label>
+          <select id="explainMode">
+            <option value="ultra">Ultra simple</option>
+            <option value="normal">Normal</option>
+            <option value="pro">Technique progressif</option>
+          </select>
+
+          <div class="quick-grid" id="quickPrompts">
+            <button type="button" class="ghost prompt-btn">Je pars de zero, fais-moi un plan sur 90 jours</button>
+            <button type="button" class="ghost prompt-btn">Explique internet, serveur, DNS, IP, HTTPS en simple</button>
+            <button type="button" class="ghost prompt-btn">Donne-moi 20 questions/reponses cyber debutant</button>
+            <button type="button" class="ghost prompt-btn">Donne un exercice debutant Python securite</button>
+            <button type="button" class="ghost prompt-btn">Donne un exercice debutant JavaScript securite web</button>
+            <button type="button" class="ghost prompt-btn">Comment devenir analyste SOC en partant de zero ?</button>
+            <button type="button" class="ghost prompt-btn">Explique difference hash, chiffrement, encodage</button>
+            <button type="button" class="ghost prompt-btn">Fais-moi une fiche de revision du jour</button>
+          </div>
+
+          <div class="panel mini-panel">
+            <h3>Ce que le coach sait faire</h3>
+            <ul class="resource-list compact">
+              <li>Expliquer les notions de base en francais simple.</li>
+              <li>Repondre en mode pas a pas, exemple, exercice, correction.</li>
+              <li>Aider sur cyber + codage (Python, JS, Linux, reseau, web).</li>
+              <li>Refuser les demandes offensives et orienter vers defense.</li>
+            </ul>
+          </div>
+        </div>
       </section>
     </main>
 
